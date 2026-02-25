@@ -2,9 +2,31 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
+// Custom hook for getting window size
+function useWindowSize() {
+    const [windowSize, setWindowSize] = useState({
+        width: typeof window !== 'undefined' ? window.innerWidth : 1024,
+        height: typeof window !== 'undefined' ? window.innerHeight : 768
+    });
+
+    useEffect(() => {
+        function handleResize() {
+            setWindowSize({
+                width: window.innerWidth,
+                height: window.innerHeight
+            });
+        }
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    return windowSize;
+}
+
 function BarGraph() {
     const [data, setData] = useState([]);
     const navigate = useNavigate();
+    const { width } = useWindowSize();
 
     useEffect(() => {
         const isAuthenticated = localStorage.getItem('isAuthenticated');
@@ -29,6 +51,9 @@ function BarGraph() {
     const goBack = () => {
         navigate('/list');
     };
+
+    const chartHeight = width < 768 ? 300 : 500;
+    const chartMargin = width < 768 ? { top: 20, right: 30, left: 20, bottom: 100 } : { top: 20, right: 30, left: 20, bottom: 60 };
 
     const CustomTooltip = ({ active, payload, label }) => {
         if (active && payload && payload.length) {
@@ -59,10 +84,10 @@ function BarGraph() {
                 </div>
 
                 <div className="chart-wrapper">
-                    <ResponsiveContainer width="100%" height={500}>
+                    <ResponsiveContainer width="100%" height={chartHeight}>
                         <BarChart
                             data={data}
-                            margin={{ top: 20, right: 30, left: 20, bottom: 60 }}
+                            margin={chartMargin}
                         >
                             <CartesianGrid strokeDasharray="3 3" stroke="#444" />
                             <XAxis

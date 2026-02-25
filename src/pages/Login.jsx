@@ -13,7 +13,7 @@ function Login() {
             localStorage.setItem('isAuthenticated', 'true');
             navigate('/list');
         } else {
-            setError('Invalid credentials. Use testuser/Test123');
+            setError('Invalid credentials.');
         }
     };
 
@@ -52,10 +52,6 @@ function Login() {
 
                     <button type="submit" className="login-button">Sign In</button>
                 </form>
-
-                <p className="demo-credentials">
-                    Demo: testuser / Test123
-                </p>
             </div>
         </div>
     );
