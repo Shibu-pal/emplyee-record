@@ -138,10 +138,6 @@ function List() {
                     </tbody>
                 </table>
             </div>
-
-            <div className="data-summary">
-                <p>Showing {Math.min(data.length, 20)} of {data.length} records</p>
-            </div>
         </div>
     );
 }
